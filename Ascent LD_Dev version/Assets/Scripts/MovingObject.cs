@@ -10,10 +10,14 @@ public class MovingObject : MonoBehaviour {
 	private Transform target;
 	private int indexTarget = 0;
 
+  /*  public Rigidbody myRigidbody;
+    Vector3 lastPosition = Vector3.zero;
+    public float rbVel;*/
+
 	// Use this for initialization
 	void Start () 
 	{
-
+       /* myRigidbody = GetComponent<Rigidbody>();*/
 	}
 
 	// Update is called once per frame
@@ -33,8 +37,13 @@ public class MovingObject : MonoBehaviour {
 
 		float step = speed * Time.deltaTime;
 		transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-
-		Debug.Log (checkpoints.Count);
-		Debug.Log (indexTarget);
 	}
+
+    /*private void FixedUpdate()
+    {
+        rbVel = (transform.position - lastPosition).magnitude;
+        lastPosition = transform.position;
+        rbVel = rbVel * 10;
+        rbVel = (int)rbVel;
+    }*/
 }

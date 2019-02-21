@@ -7,12 +7,16 @@ public class CamMouseLook : MonoBehaviour {
 	public Vector2 mouseLook;
 	public float sensitivity = 5.0f;
 
-	GameObject character;
+    [HideInInspector] GameObject character;
+    [HideInInspector] PlayerController playerController;
+    [HideInInspector] GameObject playerHolder;
 
 	// Use this for initialization
 	void Start () {
 		character = this.transform.parent.gameObject;
-	}
+        playerController = character.GetComponent<PlayerController>();
+        playerHolder = GameObject.FindGameObjectWithTag("PlayerHolder");
+    }
 
 	// Update is called once per frame
 	void Update () {
@@ -23,10 +27,35 @@ public class CamMouseLook : MonoBehaviour {
 		mouseLook += mouseDelta;
 
 		transform.localRotation = Quaternion.AngleAxis (-mouseLook.y, Vector3.right);
-		character.transform.localRotation = Quaternion.AngleAxis (mouseLook.x, character.transform.up);
+        character.transform.localRotation = Quaternion.identity;
+        if (playerController.isAlenvers == true)
+        {
+            character.transform.localRotation = Quaternion.AngleAxis(-mouseLook.x, character.transform.up);
+            /*if (playerController.inverseLook == true)
+            {
+               // mouseLook.x = 0;
+                //mouseLook.x = -mouseLook.x;
+                playerController.inverseLook = false;
+            }*/
+        }
+        else
+        {
+            character.transform.localRotation = Quaternion.AngleAxis(mouseLook.x, character.transform.up);
+          /*  if (playerController.inverseLook == true)
+            {
+               // mouseLook.x = -mouseLook.x;
+                //mouseLook.x = 0;
+                playerController.inverseLook = false;
+            }*/
+        }
 
-		BlockView ();
+
+        // character.transform.localRotation = new Quaternion(mouseLook.x, character.transform.localRotation.y, -180, character.transform.localRotation.w);
+
+        BlockView ();
 	}
+
+
 
 	void BlockView()
 	{
