@@ -7,50 +7,50 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
 	public CamMouseLook cam;
 	Text timer;
-	[HideInInspector] float timeLastDeath = 0f;
+    [HideInInspector] float timeLastDeath = 0f;
 
     [HideInInspector] public bool isAlive = true;
 	[HideInInspector]public bool canMove = true;
 	private float justDied = 0f;
 
-	public GameObject cameraBase;
+    [SerializeField] GameObject cameraBase;
 
     [HideInInspector] public Vector3 spawnPoint;
 
-	public float airStraffe = 2.0f;
-	public float walkSpeed = 10.0f;
-	public float runSpeed = 30.0f;
+    [SerializeField] float airStraffe = 2.0f;
+    [SerializeField] float walkSpeed = 10.0f;
+    [SerializeField] float runSpeed = 30.0f;
 	[HideInInspector] public float speed;
 	private float fadeSpeed = 0.5f;
 
-	public float wallJumpForce = 10.0f;
-	public float jumpForce = 10.0f;
-	public float jumpForceFade = 10.0f;
-	public float maxTimeJump = 0.2f;
+    [SerializeField] float wallJumpForce = 10.0f;
+    [SerializeField] float jumpForce = 10.0f;
+    [SerializeField] float jumpForceFade = 10.0f;
+    [SerializeField] float maxTimeJump = 0.2f;
 	private float actualTimeJump = 1.5f;
 	private bool jumped = false;
 	private bool doubleWalljumpCounter = false;
 
 	private Vector3 previousPosition;
-	public float airBufferDivider = 180f;
+    [SerializeField] float airBufferDivider = 180f;
 
-	public float groundSpeed = 30.0f;
-	public float wallJumpReduction = 10.0f;
-	public float speedDivisionStraffe = 2.0f;
-	public Rigidbody rbPlayer;
+    [SerializeField] float groundSpeed = 30.0f;
+    public float wallJumpReduction = 10.0f;
+    [SerializeField] float speedDivisionStraffe = 2.0f;
+	Rigidbody rbPlayer;
 
 	[Range (0.0f, 1.0f)]public float angleAttaque = 0.5f;
 
 	public bool onGround = false;
 
 	private AudioSource source;
-	public AudioClip deathSound;
-	public AudioClip walkSound;
-	public AudioClip walkSound2;
-	public AudioClip walkSound3;
-	public AudioClip jumpSound;
-	public AudioClip landSound;
-	public AudioClip spawnSound;
+	[SerializeField] AudioClip deathSound;
+	[SerializeField] AudioClip walkSound;
+	[SerializeField] AudioClip walkSound2;
+	[SerializeField] AudioClip walkSound3;
+	[SerializeField] AudioClip jumpSound;
+	[SerializeField] AudioClip landSound;
+    [SerializeField] AudioClip spawnSound;
 
 	private float walksoundPlayed;
 	private float timeBetweenSteps;
@@ -70,13 +70,27 @@ public class PlayerController : MonoBehaviour {
     public bool isAttachedToCrusher = false;
     public bool callDeath = false;
 
+    public bool slideFirstFrame = true;
+    public bool isSliding;
+    private Vector3 slideVector;
     private bool wasOnGround;
     private bool powerIsOnCd;
     int fallStartingH;
     int fallLandingH;
     [SerializeField] private int maxFallHeight = 50;
 
+    private int fallCounter = 0;
     private Quaternion targetRotation;
+
+    private Vector3 jumpStartPosition;
+    [SerializeField] private bool alternateAirBuffer = false;
+
+    [SerializeField] private CapsuleCollider myCapsuleCollider5H;
+
+    public bool respawnUpsideDown = false;
+    private bool fallingCheck;
+    public float checkpointDirection;
+    private bool dieOnLanding = false;
 
     // Use this for initialization
     void Start () 
@@ -112,7 +126,27 @@ public class PlayerController : MonoBehaviour {
 
 			WallJumping ();
 
-            if (Input.GetKeyDown(KeyCode.R) || callDeath)
+            if (Input.GetKey(KeyCode.C) && onGround)
+            {
+                isSliding = true;
+            } else if (!slideFirstFrame && isSliding == true && !Input.GetKey(KeyCode.C))
+            {
+                isSliding = false;
+                if (isAlenvers)
+                {
+                    cameraBase.transform.position = new Vector3(cameraBase.transform.position.x, cameraBase.transform.position.y - 1.5f, cameraBase.transform.position.z);
+                }
+                else
+                {
+                    cameraBase.transform.position = new Vector3(cameraBase.transform.position.x, cameraBase.transform.position.y + 1.5f, cameraBase.transform.position.z);
+                    Debug.Log("+from releasing c");
+                }
+                myCapsuleCollider5H.center = new Vector3(0,2.5f,0);
+                myCapsuleCollider5H.height = 5;
+                slideFirstFrame = true;
+            }
+
+           if (Input.GetKeyDown(KeyCode.R) || callDeath)
             {
                 Death();
             }
@@ -126,16 +160,24 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("Respawn");
 			source.PlayOneShot (spawnSound, 1.0f);
 			transform.position = spawnPoint;
-			cameraBase.SetActive (true);
+            fallStartingH = (int)transform.position.y;
+      /*  if (isAlenvers)
+        {
+            playerHolder.transform.position = this.transform.position;
+            transform.position = playerHolder.transform.position;
+            playerHolder.transform.eulerAngles = new Vector3(playerHolder.transform.rotation.x, playerHolder.transform.rotation.eulerAngles.y, -180);
+            isAlenvers = false;
+        } */
+            cameraBase.SetActive (true);
 			timeLastDeath = Time.time;
-			cam.mouseLook = new Vector2 (0f, 0f);
+			cam.mouseLook = new Vector2 (checkpointDirection, 0f);
 			justDied = 0f;
 			isAlive = true;
 			canMove = true;
 		}
 
         //gravity control
-         if (Input.GetKeyDown(KeyCode.E) && ChangeGravity == false || Input.GetButtonDown("Fire1") && ChangeGravity == false)
+         /* if (Input.GetKeyDown(KeyCode.E) && ChangeGravity == false || Input.GetButtonDown("Fire1") && ChangeGravity == false)
         {
             if ((fallStartingH - fallLandingH) < maxFallHeight)
             {
@@ -150,16 +192,16 @@ public class PlayerController : MonoBehaviour {
             }
             StartCoroutine(GravityTimeController());
             ChangeGravity = true;
-        } 
+        } */
 
-        if (Input.GetKeyDown(KeyCode.A) && ChangeGravity == false && isAlenvers == false && !powerIsOnCd)
+        if (Input.GetKeyDown(KeyCode.A) && !ChangeGravity && !isAlenvers && !powerIsOnCd && !isSliding)
         {
             Physics.gravity = new Vector3(0, -worldGravity, 0);                   
             isAlenvers = true;
             powerIsOnCd = true;
             StartCoroutine(PlayerRotaterDelayer());    
         }
-        else if (Input.GetKeyDown(KeyCode.A) && ChangeGravity == false && isAlenvers == true && !powerIsOnCd)
+        else if (Input.GetKeyDown(KeyCode.A) && !ChangeGravity && isAlenvers && !powerIsOnCd && !isSliding)
         {
             powerIsOnCd = true;
             isAlenvers = false;
@@ -169,8 +211,9 @@ public class PlayerController : MonoBehaviour {
                 
     }
 
-        IEnumerator PlayerRotaterDelayer()
+    IEnumerator PlayerRotaterDelayer()
     {
+        fallCounter = 0;
         playerHolder.transform.position = this.transform.position;
         transform.position = playerHolder.transform.position;
         playerHolder.transform.eulerAngles = new Vector3(playerHolder.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y , playerHolder.transform.rotation.eulerAngles.z); 
@@ -188,12 +231,13 @@ public class PlayerController : MonoBehaviour {
                 }
                 else
                 {
-                    i = i - 2;
+                    i = i - 1;
                     playerHolder.transform.eulerAngles = new Vector3(playerHolder.transform.rotation.x, playerHolder.transform.rotation.eulerAngles.y, -i);
                     yield return new WaitForSecondsRealtime(0.0001f);
                 }
               }
-          }
+              
+        }
           else
           {
               for (int j = 180; j > -5; j = j - 5)
@@ -207,12 +251,13 @@ public class PlayerController : MonoBehaviour {
                 }
                 else
                 {
-                    j = j + 2;
+                    j = j + 1;
                     playerHolder.transform.eulerAngles = new Vector3(playerHolder.transform.rotation.x, playerHolder.transform.rotation.eulerAngles.y, -j);
                     yield return new WaitForSecondsRealtime(0.0001f);
                 }
               }
-          }
+            
+        }
         fallStartingH = (int)transform.position.y;
         if (isAlenvers)
         {        
@@ -225,7 +270,7 @@ public class PlayerController : MonoBehaviour {
         StopCoroutine(PlayerRotaterDelayer());
     }
 
-       IEnumerator GravityTimeController()
+    IEnumerator GravityTimeController()
     {
         yield return new WaitForSecondsRealtime(gravityPowersDuration);
         ChangeGravity = false;
@@ -235,9 +280,19 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
-		GroundChecking ();
+        if (powerIsOnCd || fallingCheck ) {
+        fallCounter = fallCounter + 1;
+            if (fallCounter >= 180)
+            {
+                fallCounter = 0;              
+                Death();
+            }
+        } else { fallCounter = 0;
+            fallingCheck = false;
+        }
 
-		IsRunning ();
+		GroundChecking ();
+        IsRunning ();
 
 		if (canMove)
         {
@@ -267,19 +322,42 @@ public class PlayerController : MonoBehaviour {
 
     private void Death() {
         callDeath = false;
+        powerIsOnCd = false;
+        fallCounter = 0;
+
+        if (!slideFirstFrame)
+        {       
+                if (isAlenvers)
+                {
+                    cameraBase.transform.position = new Vector3(cameraBase.transform.position.x, cameraBase.transform.position.y - 1.5f, cameraBase.transform.position.z);
+                }
+                else
+                {
+                    cameraBase.transform.position = new Vector3(cameraBase.transform.position.x, cameraBase.transform.position.y + 1.5f, cameraBase.transform.position.z);
+                Debug.Log("+from death");
+            }
+            myCapsuleCollider5H.center = new Vector3(0, 2.5f, 0);
+            myCapsuleCollider5H.height = 5;
+            slideFirstFrame = true;
+        }
+        if (respawnUpsideDown)
+        {
+            playerHolder.transform.eulerAngles = new Vector3(playerHolder.transform.rotation.x, playerHolder.transform.rotation.eulerAngles.y, -180);
+            isAlenvers = true;
+        } else
+        {
+            playerHolder.transform.eulerAngles = new Vector3(playerHolder.transform.rotation.x, playerHolder.transform.rotation.eulerAngles.y, 0);
+            isAlenvers = false;
+        }
+
+        fallingCheck = false;
+        isSliding = false;
         source.PlayOneShot(deathSound, 1.0f);
         rbPlayer.velocity = Vector3.zero;
         justDied = Time.time;
         isAlive = false;
         canMove = false;
         cameraBase.SetActive(false);
-        /*if (isAlenvers)
-        {
-            playerHolder.transform.position = this.transform.position;
-            transform.position = playerHolder.transform.position;
-            playerHolder.transform.eulerAngles = new Vector3(playerHolder.transform.rotation.x, playerHolder.transform.rotation.eulerAngles.y, -180);
-            isAlenvers = false;
-        }*/
         ResetGravity();
     }
 
@@ -309,7 +387,12 @@ public class PlayerController : MonoBehaviour {
 		else 
 		{
 			wasOnGround = false;
-		}
+            fallLandingH = (int)transform.position.y;
+            if ((fallStartingH - fallLandingH) >= 1.5 * maxFallHeight)
+            {
+                dieOnLanding = true;
+            }
+        }
 
 		float j = 0.0f;
         for (int i = 0; i < 16; i++)
@@ -356,15 +439,17 @@ public class PlayerController : MonoBehaviour {
 			source.PlayOneShot (landSound, 0.8f);
             fallLandingH = (int)transform.position.y;
             powerIsOnCd = false;
-            if ((fallStartingH - fallLandingH) >= maxFallHeight)
+            if ((fallStartingH - fallLandingH) >= maxFallHeight || dieOnLanding)
             {
+                dieOnLanding = false;
                 Death();
             }
 		}
         else if (wasOnGround && !onGround)
         {
             fallStartingH = (int)transform.position.y;
-        }
+            fallingCheck = true;
+        } 
 	}
 
 	private void Moving ()
@@ -374,14 +459,43 @@ public class PlayerController : MonoBehaviour {
         
 		if (onGround) 
 		{
-			translation = Input.GetAxisRaw ("Vertical") * ((speed * fadeSpeed) * groundSpeed);
+            fallingCheck = false;
+            translation = Input.GetAxisRaw ("Vertical") * ((speed * fadeSpeed) * groundSpeed);
 			straffe = Input.GetAxisRaw ("Horizontal") * (((speed * fadeSpeed)*groundSpeed) / speedDivisionStraffe);
 			translation *= Time.deltaTime;
 			straffe *= Time.deltaTime;
+            if (isSliding)
+            {
+                if (slideFirstFrame)
+                {
+                    Vector3 force = new Vector3(0.0f, 0.0f, ((speed * fadeSpeed) * groundSpeed) * 0.037f);
+                    force = transform.localToWorldMatrix.MultiplyVector(force);
+                    slideVector = force;
+                    rbPlayer.AddForce(force, ForceMode.VelocityChange);
+                    slideFirstFrame = false;
 
-			Vector3 force = new Vector3 (straffe, 0.0f, translation);
-			force = transform.localToWorldMatrix.MultiplyVector (force);
-			rbPlayer.AddForce (force, ForceMode.VelocityChange);
+                    if (isAlenvers)
+                    {
+                        cameraBase.transform.position = new Vector3(cameraBase.transform.position.x, cameraBase.transform.position.y + 1.5f, cameraBase.transform.position.z);
+                    }
+                    else
+                    {
+                       cameraBase.transform.position = new Vector3(cameraBase.transform.position.x, cameraBase.transform.position.y - 1.5f, cameraBase.transform.position.z);                                                                     
+                    }
+                    myCapsuleCollider5H.center = new Vector3(0, 1f, 0);
+                    myCapsuleCollider5H.height = 2;
+                } else
+                {
+                    slideVector = slideVector * 0.987f;
+                    rbPlayer.AddForce(slideVector, ForceMode.VelocityChange);
+                }
+            }
+            else
+            {               
+                Vector3 force = new Vector3(straffe, 0.0f, translation);
+			    force = transform.localToWorldMatrix.MultiplyVector (force);
+			    rbPlayer.AddForce (force, ForceMode.VelocityChange);
+            }
 
 			Vector3 v = rbPlayer.velocity;
 			v.x = 0f;
@@ -410,9 +524,35 @@ public class PlayerController : MonoBehaviour {
 				}
 				walksoundPlayed = Time.time;
 			}
-		} 
-		else 
-		{
+            alternateAirBuffer = false;
+            jumpStartPosition = transform.position;
+		}
+        else if ((jumpStartPosition.x == transform.position.x) && (jumpStartPosition.z == transform.position.z))
+        {
+            alternateAirBuffer = true;
+            translation = Input.GetAxis("Vertical") * speed;
+            straffe = Input.GetAxis("Horizontal") * speed * airStraffe;
+            translation *= Time.deltaTime;
+            straffe *= Time.deltaTime;
+            float airControlBuffer = CalculateAirControlBuffer(translation, straffe);
+            Vector3 force = new Vector3(straffe * airControlBuffer *6, 0.0f, translation * airControlBuffer *6);
+            force = transform.localToWorldMatrix.MultiplyVector(force);
+            rbPlayer.AddForce(force, ForceMode.VelocityChange);
+        } 
+        else if (alternateAirBuffer)
+        {
+            alternateAirBuffer = true;
+            translation = Input.GetAxis("Vertical") * speed;
+            straffe = Input.GetAxis("Horizontal") * speed * airStraffe;
+            translation *= Time.deltaTime;
+            straffe *= Time.deltaTime;
+            float airControlBuffer = CalculateAirControlBuffer(translation, straffe);
+            Vector3 force = new Vector3(straffe * airControlBuffer *6, 0.0f, translation * airControlBuffer *6);
+            force = transform.localToWorldMatrix.MultiplyVector(force);
+            rbPlayer.AddForce(force, ForceMode.VelocityChange);
+        }
+        else
+        {
 			translation = Input.GetAxis ("Vertical") * speed;
 			straffe = Input.GetAxis ("Horizontal") * speed * airStraffe;
 			translation *= Time.deltaTime;
@@ -422,6 +562,7 @@ public class PlayerController : MonoBehaviour {
 			force = transform.localToWorldMatrix.MultiplyVector (force);
 			rbPlayer.AddForce (force, ForceMode.VelocityChange);
 		}
+
 
 		previousPosition = transform.position;
 	}
@@ -519,6 +660,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     if ((Input.GetKeyDown("space") || Input.GetButtonDown("Fire2")) && hit.normal.y < angleAttaque && !onGround && !doubleWalljumpCounter && hit.transform.tag == "WallJumpAble")
                     {
+                        fallCounter = 0;
                         Vector3 v = rbPlayer.velocity;
                         v.y = 0f;
                         rbPlayer.velocity = v;
@@ -543,6 +685,7 @@ public class PlayerController : MonoBehaviour {
                 {
                     if ((Input.GetKeyDown("space") || Input.GetButtonDown("Fire2")) && hit.normal.y < angleAttaque && !onGround && !doubleWalljumpCounter && hit.transform.tag == "WallJumpAble")
                     {
+                        fallCounter = 0;
                         Vector3 v = rbPlayer.velocity;
                         v.y = 0f;
                         rbPlayer.velocity = v;

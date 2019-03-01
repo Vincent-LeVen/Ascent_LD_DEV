@@ -9,6 +9,8 @@ public class CheckPoint : MonoBehaviour
     public bool isActivated;
     public GameObject Player;
     public PlayerController playerController;
+    public bool checkpointIsUpsideDown;
+    public float playerDirection;
 
     void Start()
     {
@@ -23,6 +25,8 @@ public class CheckPoint : MonoBehaviour
         {
             isActivated = true;
             playerController.spawnPoint = myPos;
+            playerController.respawnUpsideDown = checkpointIsUpsideDown;
+            playerController.checkpointDirection = playerDirection;
         }
     }
 
