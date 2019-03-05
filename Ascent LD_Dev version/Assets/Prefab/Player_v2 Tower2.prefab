@@ -70,11 +70,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 67116575547433220}
-  timer: {fileID: 67116574850159462}
-  timeLastDeath: 0
-  timerSinceDeath: 0
+  isAlive: 1
   canMove: 1
   cameraBase: {fileID: 67116575547433241}
+  spawnPoint: {x: 0, y: 0, z: 0}
   airStraffe: 0.8
   walkSpeed: 6
   runSpeed: 20
@@ -87,7 +86,6 @@ MonoBehaviour:
   groundSpeed: 300
   wallJumpReduction: 0.4
   speedDivisionStraffe: 1.5
-  rbPlayer: {fileID: 67116574169540713}
   angleAttaque: 0.5
   onGround: 0
   deathSound: {fileID: 8300000, guid: 1a89a3cacb95afe40bf812193e2b46d1, type: 3}
@@ -98,9 +96,21 @@ MonoBehaviour:
   landSound: {fileID: 8300000, guid: a84da042b52923c41bd03c75062c7b37, type: 3}
   spawnSound: {fileID: 8300000, guid: 3207b5396a8226b4f81d49a8f504a6fd, type: 3}
   reverseGravityValue: 23
-  higherGravityValue: -60
   gravityPowersDuration: 0.6
   worldGravity: -30
+  isAlenvers: 0
+  playerHolder: {fileID: 0}
+  inverseLook: 0
+  isAttachedToOne: 0
+  isAttachedToCrusher: 0
+  callDeath: 0
+  slideFirstFrame: 1
+  isSliding: 0
+  maxFallHeight: 50
+  alternateAirBuffer: 0
+  myCapsuleCollider5H: {fileID: 0}
+  respawnUpsideDown: 0
+  checkpointDirection: 0
 --- !u!136 &67116574169540719
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -348,7 +358,6 @@ GameObject:
   - component: {fileID: 67116575547433242}
   - component: {fileID: 67116575547433220}
   - component: {fileID: 67116575547433243}
-  - component: {fileID: 67116575547433240}
   m_Layer: 0
   m_Name: Player cam
   m_TagString: Untagged
@@ -407,8 +416,8 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 1
   m_OcclusionCulling: 1
@@ -429,6 +438,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseLook: {x: 0, y: 0}
   sensitivity: 0.5
+  slideInitialX: 0
+  slideSecondX: 0
 --- !u!81 &67116575547433243
 AudioListener:
   m_ObjectHideFlags: 0
@@ -438,24 +449,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 67116575547433241}
   m_Enabled: 1
---- !u!114 &67116575547433240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 255392233, guid: 747942c0646484548b647ae48b2c4a2e,
-    type: 3}
-  m_PrefabInstance: {fileID: 67116573936460422}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 67116575547433241}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b9a305e18de0c04dbd257a21cd47087, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sharedProfile: {fileID: 11400000, guid: 8b5211cb05b6b374aa0c4c8a3e182d70, type: 2}
-  isGlobal: 1
-  blendDistance: 0
-  weight: 0.552
-  priority: 0
 --- !u!1 &67116575549504894
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,5 +560,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 747942c0646484548b647ae48b2c4a2e, type: 3}
