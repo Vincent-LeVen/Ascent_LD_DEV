@@ -763,7 +763,7 @@ VisualEffectResource:
       pivotZ = (float)0;\n\t\t\t\t\t\tfloat size = (float)0.1;\n\t\t\t\t\t\tfloat
       scaleX = (float)1;\n\t\t\t\t\t\tfloat scaleY = (float)1;\n\t\t\t\t\t\tfloat
       scaleZ = (float)1;\n\t\t\t\t\t\t\n\t\t\t\t\n\t\t\t\t\t\t#endif\n\t\t\t\t\t\t\n\t\t\t\t{\n\t\t\t\t
-      \   SetAttribute_FDD06EC7( /*inout */color, float3(0.09611961,2.8986,4.075472));\n\t\t\t\t}\n\t\t\t\t{\n\t\t\t\t
+      \   SetAttribute_FDD06EC7( /*inout */color, float3(0.1066877,4.075472,2.507628));\n\t\t\t\t}\n\t\t\t\t{\n\t\t\t\t
       \   float tmp_y = position[0];\n\t\t\t\t    float tmp_z = uniform_b + tmp_y;\n\t\t\t\t
       \   float tmp_ba = position[1];\n\t\t\t\t    float2 tmp_bb = float2(tmp_z, tmp_ba);\n\t\t\t\t
       \   float3 tmp_be = GeneratePerlinNoise(tmp_bb, float3(2,0.5,2).x, (int)1, float3(2,0.5,2).y,
@@ -773,7 +773,7 @@ VisualEffectResource:
       \   float tmp_bn = (float)1.09 + tmp_bm;\n\t\t\t\t    float tmp_bp = tmp_bn
       - (float)20.97;\n\t\t\t\t    float tmp_br = tmp_bp / (float)-20.77;\n\t\t\t\t
       \   float tmp_bt = tmp_br * (float)0.92;\n\t\t\t\t    SetAttribute_18B2FD0(
-      /*inout */color, float3(1,1,1), tmp_bt);\n\t\t\t\t}\n\t\t\t\t{\n\t\t\t\t    float
+      /*inout */color, float3(0,0,0), tmp_bt);\n\t\t\t\t}\n\t\t\t\t{\n\t\t\t\t    float
       tmp_z = position[0];\n\t\t\t\t    float tmp_ba = uniform_b + tmp_z;\n\t\t\t\t
       \   float tmp_bb = position[1];\n\t\t\t\t    float2 tmp_bc = float2(tmp_ba,
       tmp_bb);\n\t\t\t\t    float3 tmp_bf = GeneratePerlinNoise(tmp_bc, float3(2,0.5,2).x,
@@ -1144,31 +1144,31 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 3
+        data[3]: 1
       - op: 1
-        valueIndex: 35
+        valueIndex: 33
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 1
+        data[3]: 3
       - op: 1
         valueIndex: 36
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 3
+        data[3]: 6
+      - op: 1
+        valueIndex: 37
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
+        data[3]: 15
       - op: 1
         valueIndex: 39
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 6
-      - op: 1
-        valueIndex: 40
-        data[0]: -1
-        data[1]: -1
-        data[2]: -1
-        data[3]: 15
+        data[3]: 3
       - op: 1
         valueIndex: 42
         data[0]: -1
@@ -1180,21 +1180,15 @@ VisualEffectResource:
         data[0]: -1
         data[1]: -1
         data[2]: -1
-        data[3]: 3
-      - op: 1
-        valueIndex: 48
-        data[0]: -1
-        data[1]: -1
-        data[2]: -1
         data[3]: 2
       - op: 1
-        valueIndex: 50
+        valueIndex: 47
         data[0]: -1
         data[1]: -1
         data[2]: -1
         data[3]: 3
       - op: 9
-        valueIndex: 53
+        valueIndex: 50
         data[0]: -1
         data[1]: -1
         data[2]: -1
@@ -1230,13 +1224,13 @@ VisualEffectResource:
           m_Value: 0.92
         - m_ExpressionIndex: 19
           m_Value: 0.5
-        - m_ExpressionIndex: 23
+        - m_ExpressionIndex: 22
           m_Value: 6.2831855
       m_Vector2f:
         m_Array:
         - m_ExpressionIndex: 21
           m_Value: {x: 200000, y: 200000}
-        - m_ExpressionIndex: 29
+        - m_ExpressionIndex: 28
           m_Value: {x: 0, y: 0}
       m_Vector3f:
         m_Array:
@@ -1247,22 +1241,20 @@ VisualEffectResource:
         - m_ExpressionIndex: 17
           m_Value: {x: 0.15, y: 2.7, z: 0.15}
         - m_ExpressionIndex: 18
-          m_Value: {x: 1, y: 1, z: 1}
-        - m_ExpressionIndex: 22
-          m_Value: {x: 0.19708972, y: 0.6262648, z: 0.9716981}
-        - m_ExpressionIndex: 24
+          m_Value: {x: 0.106687725, y: 4.0754724, z: 2.5076284}
+        - m_ExpressionIndex: 23
           m_Value: {x: 0, y: 0, z: 0}
-        - m_ExpressionIndex: 27
+        - m_ExpressionIndex: 26
           m_Value: {x: 2, y: 3, z: 2}
-        - m_ExpressionIndex: 28
+        - m_ExpressionIndex: 27
           m_Value: {x: 0, y: 1, z: 0}
-        - m_ExpressionIndex: 30
-          m_Value: {x: 0.096119605, y: 2.8985996, z: 4.075472}
+        - m_ExpressionIndex: 29
+          m_Value: {x: 0.19708972, y: 0.6262648, z: 0.9716981}
       m_Vector4f:
         m_Array: []
       m_Uint:
         m_Array:
-        - m_ExpressionIndex: 25
+        - m_ExpressionIndex: 24
           m_Value: 4294967295
       m_Int:
         m_Array:
@@ -1278,7 +1270,7 @@ VisualEffectResource:
         m_Array:
         - m_ExpressionIndex: 20
           m_Value: {fileID: 0}
-        - m_ExpressionIndex: 26
+        - m_ExpressionIndex: 25
           m_Value: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
       m_Bool:
         m_Array: []
@@ -1399,7 +1391,7 @@ VisualEffectResource:
       - nameId: Count
         index: 21
       - nameId: Delay
-        index: 29
+        index: 28
       params: []
       processor: {fileID: 0}
       shaderSourceIndex: -1
@@ -1422,9 +1414,9 @@ VisualEffectResource:
       index: 5
     values:
     - nameId: bounds_center
-      index: 28
-    - nameId: bounds_size
       index: 27
+    - nameId: bounds_size
+      index: 26
     tasks:
     - type: 536870912
       buffers:
@@ -1435,9 +1427,9 @@ VisualEffectResource:
       values: []
       params:
       - nameId: bounds_center
-        index: 28
-      - nameId: bounds_size
         index: 27
+      - nameId: bounds_size
+        index: 26
       processor: {fileID: 0}
       shaderSourceIndex: 0
     - type: 805306368
@@ -1462,7 +1454,7 @@ VisualEffectResource:
         index: 4
       values:
       - nameId: localToWorld
-        index: 31
+        index: 30
       params: []
       processor: {fileID: 0}
       shaderSourceIndex: 4
@@ -1479,9 +1471,9 @@ VisualEffectResource:
         index: 20
       params:
       - nameId: mesh
-        index: 26
-      - nameId: subMeshMask
         index: 25
+      - nameId: subMeshMask
+        index: 24
       - nameId: sortPriority
         index: 0
       - nameId: indirectDraw
@@ -4079,7 +4071,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":0.09611960500478745,"y":2.898599624633789,"z":4.075471878051758}'
+      m_SerializableObject: '{"x":0.10668772459030152,"y":4.075472354888916,"z":2.5076284408569338}'
     m_Space: 2147483647
   m_Property:
     name: Color
@@ -4248,7 +4240,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Vector3, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"x":1.0,"y":1.0,"z":1.0}'
+      m_SerializableObject: '{"x":0.0,"y":0.0,"z":0.0}'
     m_Space: 2147483647
   m_Property:
     name: Color

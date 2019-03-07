@@ -142,9 +142,9 @@ MonoBehaviour:
   categories: []
   uiBounds:
     serializedVersion: 2
-    x: -1542
+    x: -1567
     y: -190
-    width: 2974
+    width: 2659
     height: 1613
 --- !u!114 &114350483966674976
 MonoBehaviour:
@@ -191,7 +191,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.47058823704719546,"g":1.4980392456054688,"b":1.301960825920105,"a":1.0},"time":0.0},{"color":{"r":0.43921568989753725,"g":2.9960784912109377,"b":0.5333333611488342,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.47058823704719546,"g":1.4980392456054688,"b":1.301960825920105,"a":1.0},"time":0.0},{"color":{"r":0.21960784494876862,"g":1.4980392456054688,"b":0.2666666805744171,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     min: -Infinity
     max: Infinity
     descendantCount: 0
@@ -1280,7 +1280,7 @@ VisualEffectResource:
           m_Value:
             serializedVersion: 2
             key0: {r: 0.47058824, g: 1.4980392, b: 1.3019608, a: 1}
-            key1: {r: 0.4392157, g: 2.9960785, b: 0.53333336, a: 1}
+            key1: {r: 0.21960784, g: 1.4980392, b: 0.26666668, a: 1}
             key2: {r: 0, g: 0, b: 0, a: 0}
             key3: {r: 0, g: 0, b: 0, a: 0}
             key4: {r: 0, g: 0, b: 0, a: 0}
@@ -5287,7 +5287,7 @@ MonoBehaviour:
   m_Parent: {fileID: 114350483966674976}
   m_Children: []
   m_UIPosition: {x: 0, y: 0}
-  m_UICollapsed: 1
+  m_UICollapsed: 0
   m_UISuperCollapsed: 0
   m_InputSlots: []
   m_OutputSlots:
@@ -5310,7 +5310,7 @@ MonoBehaviour:
     linkedSlots:
     - outputSlot: {fileID: 8926484042661614644}
       inputSlot: {fileID: 8926484042661614617}
-    position: {x: 263.466, y: 615.5473}
+    position: {x: 260.466, y: 550.5473}
     expandedSlots: []
     expanded: 1
 --- !u!114 &8926484042661614644
@@ -5337,7 +5337,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.47058823704719546,"g":1.4980392456054688,"b":1.301960825920105,"a":1.0},"time":0.0},{"color":{"r":0.43921568989753725,"g":2.9960784912109377,"b":0.5333333611488342,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.47058823704719546,"g":1.4980392456054688,"b":1.301960825920105,"a":1.0},"time":0.0},{"color":{"r":0.21960784494876862,"g":1.4980392456054688,"b":0.2666666805744171,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":1.0,"time":0.0},{"alpha":1.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: o
