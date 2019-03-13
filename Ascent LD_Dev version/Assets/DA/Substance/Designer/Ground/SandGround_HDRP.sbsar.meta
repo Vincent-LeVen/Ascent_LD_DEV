@@ -25,7 +25,8 @@ ScriptedImporter:
     generateAllOutputs: 1
     generateMipMaps: 1
     preset: " <sbspreset pkgurl=\"pkg://Sand\" label=\"\" >\n  <presetinput identifier=\"$outputsize\"
-      uid=\"3011048941\" type=\"8\" value=\"11,11\" />\n </sbspreset>\n"
+      uid=\"3011048941\" type=\"8\" value=\"11,11\" />\n  <presetinput identifier=\"Position\"
+      uid=\"3649808625\" type=\"0\" value=\"0.089\" />\n </sbspreset>\n"
     shaderName: Standard
     outputNames: 
     texturePackingList:
