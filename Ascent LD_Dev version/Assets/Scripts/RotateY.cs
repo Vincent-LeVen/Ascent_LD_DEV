@@ -6,7 +6,7 @@ public class RotateY : MonoBehaviour
 {
 
     private Vector3 startRotation;
-    private float actualRotation = 0.0f;
+    public float actualRotation = 0.0f;
     public float rotateSpeed = 0.5f;
     // Use this for initialization
     void Start()
